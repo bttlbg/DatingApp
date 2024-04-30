@@ -4,8 +4,18 @@
   <div class="mb-3">
     <input type="text" name="username" [(ngModel)]="model.username" placeholder="Username" class="form-control">
   </div>
+
   <div class="mb-3">
-    <input type="password" name="password" [(ngModel)]="model.password" placeholder="Password" class="form-control">
+    <label>who is you raforite?</label>
+    <select class="form-select">
+      <option *ngFor="let user of usersFromHomeComponent" [value]="user.userName">
+        {{user.userName}}
+      </option>
+    </select>
+  </div>
+
+  <div class=" mb-3">
+        <input type="password" name="password" [(ngModel)]="model.password" placeholder="Password" class="form-control">
   </div>
   <div class="text-center">
     <button class="btn btn-success me-2" type="submit">Register</button>
