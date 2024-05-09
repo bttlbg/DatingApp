@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
     <div class="container">
         <a class="navbar-brand" routerLink="/" routerLinkActive="active">DTApp</a>
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
@@ -15,9 +15,9 @@
             </ng-container>
         </ul>
 
-        <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
+        <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
             <a class="dropdown-toggle text-light text-decoration-none" style="cursor: pointer;"  dropdownToggle>
-                Welcome {{model.username}}
+                Welcome {{user.username | titlecase}}
             </a>
             <ul class="dropdown-menu" *dropdownMenu>
                 <a class="dropdown-item">Edit Profile</a>
@@ -28,7 +28,7 @@
         <form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" autocomplete="off" *ngIf="!(accountService.currentUser$ | async)">
             <input name="username" [(ngModel)]="model.username" class="form-control me-2" type="text" placeholder="Username">
             <input name="password" [(ngModel)]="model.password" class="form-control me-2" type="password" placeholder="Password">
-            <button class="btn btn-outline-success" type="submit">Login</button>
+            <button class="btn btn-success" type="submit">Login</button>
         </form>
     </div>
 </nav>
