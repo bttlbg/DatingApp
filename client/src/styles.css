@@ -46,3 +46,9 @@
   border-top: 1px solid #eee;
   padding: 15px 0;
 }
+
+
+/* Overrides for ngx gallery*/
+.gallery {
+  height: 600px;
+}
