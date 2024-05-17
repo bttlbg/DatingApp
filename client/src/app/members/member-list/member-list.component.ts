@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Observable } from 'rxjs';
 import { MembersService } from 'src/app/_services/members.service';
 import { Member } from 'src/app/models/member';
@@ -31,6 +32,13 @@ export class MemberListComponent implements OnInit {
         }
       }
     })
+  }
+
+  pageChanged(event: any) {
+    if (this.pagenumber !== event.page) {
+      this.pagenumber = event.page;
+      this.loadMember();
+    }
   }
 
 }
