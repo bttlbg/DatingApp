@@ -27,7 +27,7 @@ export class MembersService {
         }
       }
     })
-   }
+  }
 
   getMembers(userParams: UserParams) {
     const response = this.memberCache.get(Object.values(userParams).join('-'));
@@ -51,7 +51,7 @@ export class MembersService {
     );
   }
 
-  private getPaginatedResults<T>(url:string, params: HttpParams) {
+  private getPaginatedResults<T>(url: string, params: HttpParams) {
     const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>;
 
     return this.http.get<T>(url, { observe: 'response', params }).pipe(
@@ -93,10 +93,10 @@ export class MembersService {
 
   getMember(username: string) {
     const member = [...this.memberCache.values()]
-      .reduce( ( arr, elem ) => arr.concat(elem.result), [] )
+      .reduce((arr, elem) => arr.concat(elem.result), [])
       .find((member: Member) => member.userName === username);
 
-    if (member)  return of(member);
+    if (member) return of(member);
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
@@ -121,7 +121,11 @@ export class MembersService {
     return this.http.post(this.baseUrl + "likes/" + username, {});
   }
 
-  getLikes(predicate: string) {
-    return this.http.get<Member[]>(this.baseUrl + "likes?predicate=" + predicate);
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+
+    params = params.append('predicate', predicate);
+
+    return this.getPaginatedResults<Member[]>(this.baseUrl + "likes", params);
   }
 }
