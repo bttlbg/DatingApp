@@ -19,6 +19,7 @@ export class NavComponent implements OnInit {
   }
 
   login() {
+    // todo: reestablecer parametros para evitar errores
     this.accountService.login(this.model).subscribe({
       next: response =>
         this.router.navigateByUrl('/members')
