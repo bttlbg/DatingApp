@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { TimeagoModule } from 'ngx-timeago';
 import { MessageService } from 'src/app/_services/message.service';
 import { Message } from 'src/app/models/message';
 
@@ -8,7 +9,7 @@ import { Message } from 'src/app/models/message';
   standalone: true,
   templateUrl: './members-messages.component.html',
   styleUrls: ['./members-messages.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, TimeagoModule]
 })
 export class MembersMessagesComponent implements OnInit {
   @Input() username?: string;
