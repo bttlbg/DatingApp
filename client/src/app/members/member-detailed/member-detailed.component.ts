@@ -18,7 +18,7 @@ import { MessageService } from 'src/app/_services/message.service';
   imports: [CommonModule, TabsModule, GalleryModule, TimeagoModule, MembersMessagesComponent],
 })
 export class MemberDetailedComponent implements OnInit {
-  @ViewChild("memberTabs") memberTabs?: TabsetComponent;
+  @ViewChild("memberTabs", {static: true}) memberTabs?: TabsetComponent;
   member: Member | undefined;
   images: GalleryItem[] = [];
   activeTab?: TabDirective;
@@ -28,6 +28,17 @@ export class MemberDetailedComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMember();
+    this.route.queryParams.subscribe({
+      next: params => {
+        params["tab"] && this.selectedTab(params["tab"])
+      }
+    })
+  }
+
+  selectedTab(heading: string) {
+    if (this.memberTabs) {
+      this.memberTabs.tabs.find(x => x.heading === heading)!.active = true;
+    }
   }
 
   onTabActivated(data: TabDirective) {
