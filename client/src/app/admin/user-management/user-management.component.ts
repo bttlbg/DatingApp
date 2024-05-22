@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { initialState } from 'ngx-bootstrap/timepicker/reducer/timepicker.reducer';
 import { AdminService } from 'src/app/_services/admin.service';
 import { RolesModalComponent } from 'src/app/modals/roles-modal/roles-modal.component';
 import { User } from 'src/app/models/user';
@@ -12,6 +13,11 @@ import { User } from 'src/app/models/user';
 export class UserManagementComponent implements OnInit {
   users: User[] = [];
   bsModalRef: BsModalRef<RolesModalComponent> = new BsModalRef<RolesModalComponent>();
+  availableRoles = [
+    "Admin",
+    "Moderator",
+    "Member"
+  ];
 
   constructor(private adminService: AdminService, private modalService: BsModalService) { }
 
@@ -25,18 +31,30 @@ export class UserManagementComponent implements OnInit {
     })
   }
 
-  openRolesModal() {
-    const initialState: ModalOptions = {
+  openRolesModal(user: User) {
+    const config = {
+      class: "modal-dialog-centered",
       initialState: {
-        list: [
-          "something",
-          "other something",
-          "three somethings",
-        ],
-        title: "test"
+        username: user.username,
+        availableRoles: this.availableRoles,
+        selectedRoles: [...user.roles]
       }
     }
-    this.bsModalRef = this.modalService.show(RolesModalComponent, initialState);
+    this.bsModalRef = this.modalService.show(RolesModalComponent, config);
+    this.bsModalRef.onHide?.subscribe({
+      next: () => {
+        const selectedRoles = this.bsModalRef.content?.selectedRoles;
+        if(!this.arrayEqual(selectedRoles!, user.roles)) {
+          this.adminService.updateUserRoles(user.username, selectedRoles!).subscribe({
+            next: roles => user.roles = roles
+          })
+        }
+      }
+    })
+  }
+
+  private arrayEqual(arr1: any[], arr2: any[]) {
+    return JSON.stringify(arr1.sort()) === JSON.stringify(arr2.sort());
   }
 
 }
