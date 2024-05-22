@@ -9,6 +9,7 @@ import { Member } from 'src/app/models/member';
 import { MembersMessagesComponent } from '../members-messages/members-messages.component';
 import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/_services/message.service';
+import { PresenceService } from 'src/app/_services/presence.service';
 
 @Component({
   selector: 'app-member-detailed',
@@ -24,7 +25,9 @@ export class MemberDetailedComponent implements OnInit {
   activeTab?: TabDirective;
   messages: Message[] = [];
 
-  constructor(private memberService: MembersService, private route: ActivatedRoute, private messageService: MessageService) { }
+  constructor(private memberService: MembersService, private route: ActivatedRoute, private messageService: MessageService,
+    public presenceService: PresenceService
+  ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe({
