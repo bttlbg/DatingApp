@@ -16,9 +16,12 @@ builder.Services.AddIdentityServices(builder.Configuration);
 
 var connString = "";
 if (builder.Environment.IsDevelopment())
-    connString = builder.Configuration.GetConnectionString("DefaultConnection");
+{
+    connString = builder.Configuration.GetConnectionString("Default");
+}
 else
 {
+    Console.WriteLine("Prod mode");
     // Use connection string provided at runtime by Heroku.
     var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
