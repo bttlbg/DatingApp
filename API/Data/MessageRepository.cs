@@ -106,6 +106,14 @@ public class MessageRepository : IMessageRepository
         return _mapper.Map<IEnumerable<MessageDto>>(messages);
     }
 
+    public async Task<Group> GetGroupForConnection(string connectionId)
+    {
+        return await _context.Groups
+            .Include(x => x.Connections)
+            .Where(x => x.Connections.Any(c => c.ConnectionId == connectionId))
+            .FirstOrDefaultAsync();
+    }
+
     public void RemoveConnection(Connection connection)
     {
         _context.Connections.Remove(connection);
